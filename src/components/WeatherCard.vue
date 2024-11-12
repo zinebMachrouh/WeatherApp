@@ -18,9 +18,39 @@
           <p>Feels like {{ roundedFeelsLike }}°</p>
         </div>
       </div>
-      <div v-if="allData">
-        <h4>salam</h4>
-      </div>
+    <div class="details">
+        <div class="detail">
+            <p><i class="bi bi-droplet"></i> Humidity</p>
+            <H4>{{ apiData.main.humidity }}%</H4>
+        </div>
+        <div class="detail">
+            <p><i class="bi bi-cloud-drizzle"></i> Precipitation</p>
+            <h4>{{ allData.forecast.forecastday[0].hour[0].chance_of_rain }} %</h4>
+        </div>
+        <div class="detail">
+            <p><i class="bi bi-wind"></i> Wind</p>
+            <h4>{{ allData.current.wind_kph }} km/h</h4>
+        </div>
+        <div class="detail">
+            <p><i class="bi bi-speedometer2"></i> AQI</p>
+            <h4>{{ aqi }}</h4>
+        </div>
+    </div>
+    <div class="aqi">
+        <div class="aqi-info">
+            <h4>AQI</h4>
+            <div class="tooltip-container">
+            <div class="tooltip-trigger">
+                300
+                <div class="info-icon"><i class="bi bi-info-lg"></i></div>
+            </div>
+            <div class="tooltip-text">300+ AQI is considered hazardous</div>
+            </div>
+        </div>
+        <div class="aqi-bar">
+            <div class="bar" :style="{ width: barWidth , backgroundColor: barColor}"></div>
+        </div>
+    </div>
     </div>
   </template>
   
@@ -49,7 +79,29 @@
       allData: {
         type: Object as PropType<any>,
         required: false
-      }
+      },
+        aqi: {
+            type: Number as PropType<number>,
+            required: false
+        }
+    },
+    computed :{
+        barWidth() {
+            const maxAqi = 300;
+            return Math.min((this.aqi / maxAqi) * 100, 100) + '%';
+        },
+        barColor() {
+            const widthPercentage = parseFloat(this.barWidth);
+            if (widthPercentage <= 16.67) {  // Up to 50 AQI
+                return '#52b788';
+            } else if (widthPercentage <= 33.33) {  // Up to 100 AQI
+                return '#ffdd00';
+            } else if (widthPercentage <= 50) {  // Up to 150 AQI
+                return 'orange';
+            } else {  // Beyond 150 AQI
+                return '#fd3749';
+            }
+        }
     },
     setup(props) {
         const roundedTemperature = computed(() => {

@@ -7,6 +7,7 @@
         :formattedTime="formattedTime"
         :temperatureUnit="temperatureUnit"
         :allData="allData"
+        :aqi="aqi"
         >
         <template #settings>
         <div class="settings">
@@ -60,6 +61,8 @@ setup() {
     const temperatureUnit = ref<string>("C")
     const measurementUnit = ref<string>("metric")
 
+    const aqi = ref<number | null>(null)
+
     const togglePopup = () => {
     isPopupVisible.value = !isPopupVisible.value
     }
@@ -72,32 +75,33 @@ setup() {
     }
 
     // This function fetches the user's location from the browser and updates the latitude and longitude refs
-const getLocation = () => {
-    if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-        latitude.value = position.coords.latitude
-        longitude.value = position.coords.longitude
-        errorMessage.value = null
+    const getLocation = () => {
+        if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+            latitude.value = position.coords.latitude
+            longitude.value = position.coords.longitude
+            errorMessage.value = null
 
-        // Fetch data after getting the location
-        fetchApiData()
-        fetchApiDataAll()
-        },
-        (error) => {
-        if (error.code === error.PERMISSION_DENIED) {
-            errorMessage.value = 'Permission to access location was denied.'
+            // Fetch data after getting the location
+            fetchApiData()
+            fetchApiDataAll()
+            fetchAQIData()
+            },
+            (error) => {
+            if (error.code === error.PERMISSION_DENIED) {
+                errorMessage.value = 'Permission to access location was denied.'
+            } else {
+                errorMessage.value = 'An error occurred while fetching the location.'
+            }
+            loading.value = false 
+            }
+        )
         } else {
-            errorMessage.value = 'An error occurred while fetching the location.'
-        }
+        errorMessage.value = 'Geolocation is not supported by this browser.'
         loading.value = false 
         }
-    )
-    } else {
-    errorMessage.value = 'Geolocation is not supported by this browser.'
-    loading.value = false 
     }
-}
 
 // This function gets the current date and time
 const getCurrentDateTime = () => {
@@ -155,8 +159,21 @@ const fetchApiDataAll = async () => {
     }
 }
 
-const fetchIcon = (icon: string) => {
-    return `https://openweathermap.org/img/wn/${icon}d@2x.png`
+const fetchAQIData = async () => {
+    if (latitude.value && longitude.value) {
+        try {
+            const response = await axios.get(
+            `${BASE_URL}air_pollution?lat=${latitude.value}&lon=${longitude.value}&appid=${API_KEY}`
+            )
+            aqi.value = response.data.list[0].main.aqi
+            console.log("AQI Response:", aqi.value)
+        } catch (error) {
+            console.error("Error fetching AQI data:", error)
+            errorMessage.value = 'Failed to fetch data from the API.'
+        } finally {
+            loading.value = false 
+        }
+    }
 }
 
 onMounted(() => {
@@ -177,7 +194,8 @@ return {
     measurementUnit,
     togglePopup,
     setTemperatureUnit,
-    setMeasurementUnit
+    setMeasurementUnit,
+    aqi
 }
 }
 }
