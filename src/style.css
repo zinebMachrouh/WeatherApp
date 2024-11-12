@@ -8,17 +8,30 @@
   font-family: "Inter", sans-serif;
 }
 
+:root{
+  --white : #fdfdfd;
+  --background : #0E121B;
+  --black : #1a1a1a;
+  --gray : #535866;
+  --border : #e2e3e8;
+}
+
+body{
+  background-color: var(--background);
+}
+
 #bg {
-  background: #0E121B;
+  background: var(--background);
   height: 100vh;
   width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 
   /* I'll be using the mobile first approach */
   .card{
-    background-color: #fdfdfd;
+    background-color: var(--white);
     border-radius: 15px;
     width: 90%;
     height: 60%;
@@ -30,6 +43,86 @@
     .content{
       width: 100%;
       height: 100%;
+
+      .card-top{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        .settings{
+          position: relative;
+
+          .gear{
+            font-size: 1.2rem;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 10px;
+            background-color: transparent;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover{
+              background-color: #f5f5f5;
+              color: var(--black);
+              border: 1px solid transparent;
+              transition: all ease-in-out 0.3s;
+            }
+
+            &:focus{
+              border: 1px solid var(--black);
+            }
+          }
+
+          .popup{
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background-color: var(--white);
+            border: var(--border) 1px solid;
+            padding: 15px;
+            border-radius: 10px;
+            width: 230px;
+            box-shadow: rgba(163, 163, 163, 0.2) 0px 2px 8px 0px;
+
+            section:last-child{
+              margin-top: 20px;
+            }
+
+            section h4{
+              font-weight: 600;
+              margin-bottom: 7px;
+              color: var(--black);
+            }
+            .switch{
+              background-color: #F5F7FA;
+              padding: 3px;
+              border-radius: 5px;
+              display: flex;
+              align-items: center;
+              gap: 5px;
+
+              button{
+                width: 50%;
+                padding: 6px 0px;
+                background: transparent;
+                color: #99A0AE;
+                border: none;
+                outline: none;
+                border-radius: 3px;
+                transition: all ease-in-out 0.3s;
+              }
+              .active{
+                background-color: var(--white);
+                color: #0E121B;
+                box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

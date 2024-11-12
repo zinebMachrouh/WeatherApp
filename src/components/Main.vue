@@ -14,6 +14,24 @@ export default {
     const formattedDate = ref<string>("")
     const formattedTime = ref<string>("")
 
+    const isPopupVisible = ref<boolean>(false)
+
+    const temperatureUnit = ref<string>("C")
+    const measurementUnit = ref<string>("metric")
+
+    // Toggle the popup visibility
+    const togglePopup = () => {
+      isPopupVisible.value = !isPopupVisible.value
+    }
+
+    // Toggle active class for temperature and measurement buttons
+    const setTemperatureUnit = (unit: string) => {
+      temperatureUnit.value = unit
+    }
+    const setMeasurementUnit = (unit: string) => {
+      measurementUnit.value = unit
+    }
+
     // This function fetches the user's location from the browser and updates the latitude and longitude refs
     const getLocation = () => {
       if (navigator.geolocation) {
@@ -90,7 +108,13 @@ export default {
       apiData,
       loading,
       formattedDate,
-      formattedTime
+      formattedTime,
+      isPopupVisible,
+      temperatureUnit,
+      measurementUnit,
+      togglePopup,
+      setTemperatureUnit,
+      setMeasurementUnit
     }
   }
 }
@@ -106,7 +130,33 @@ export default {
                 <p>{{ formattedDate }}</p>
                 <p>{{ formattedTime }}</p>
             </div>
-            <div class="settings"></div>
+            <div class="settings">
+                <button @click="togglePopup" class="bi bi-gear-fill gear"></button>
+                <div class="popup" v-if="isPopupVisible">
+                    <section>
+                        <h4>Temperature</h4>
+                        <div class="switch">
+                            <button 
+                              :class="{ active: temperatureUnit === 'C' }" 
+                              @click="setTemperatureUnit('C')">°C</button>
+                            <button 
+                              :class="{ active: temperatureUnit === 'F' }" 
+                              @click="setTemperatureUnit('F')">°F</button>
+                        </div>
+                    </section>
+                    <section>
+                        <h4>Measurements</h4>
+                        <div class="switch">
+                            <button 
+                              :class="{ active: measurementUnit === 'metric' }" 
+                              @click="setMeasurementUnit('metric')">Metric</button>
+                            <button 
+                              :class="{ active: measurementUnit === 'imperial' }" 
+                              @click="setMeasurementUnit('imperial')">Imperial</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
       </div>
       <!-- This loader will be displayed while the data is being fetched -->
