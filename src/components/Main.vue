@@ -1,38 +1,71 @@
-<script lang="ts">
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+<template>
+    <div id="bg">
+      <div class="card" v-if="latitude && longitude">
+        <WeatherCard
+          :apiData="apiData"
+          :formattedDate="formattedDate"
+          :formattedTime="formattedTime"
+        >
+          <template #settings>
+            <div class="settings">
+                <button @click="togglePopup" class="bi bi-gear-fill gear"></button>
+                <SettingsPopup
+                v-if="isPopupVisible"
+                :isPopupVisible="isPopupVisible"
+                :temperatureUnit="temperatureUnit"
+                :measurementUnit="measurementUnit"
+                @update:temperatureUnit="setTemperatureUnit"
+                @update:measurementUnit="setMeasurementUnit"
+                />
+            </div>
+          </template>
+        </WeatherCard>
+        <Loader v-if="loading" />
+        <h2 v-if="errorMessage" style="color: red;">{{ errorMessage }}</h2>
+      </div>
+    </div>
+  </template>
+  
+  <script lang="ts">
 
-export default {
-  setup() {
-    const latitude = ref<number | null>(null)
-    const longitude = ref<number | null>(null)
-    const errorMessage = ref<string | null>(null)
-    const API_KEY = "188f6e276831bbab19cc0ba7441ef581"
-    const BASE_URL = "https://api.openweathermap.org/data/2.5/"
-    const apiData = ref<any>(null)
-    const loading = ref<boolean>(true)
-    const formattedDate = ref<string>("")
-    const formattedTime = ref<string>("")
-
-    const isPopupVisible = ref<boolean>(false)
-
-    const temperatureUnit = ref<string>("C")
-    const measurementUnit = ref<string>("metric")
-
-    // Toggle the popup visibility
-    const togglePopup = () => {
-      isPopupVisible.value = !isPopupVisible.value
-    }
-
-    // Toggle active class for temperature and measurement buttons
-    const setTemperatureUnit = (unit: string) => {
-      temperatureUnit.value = unit
-    }
-    const setMeasurementUnit = (unit: string) => {
-      measurementUnit.value = unit
-    }
-
-    // This function fetches the user's location from the browser and updates the latitude and longitude refs
+  import { ref, onMounted } from 'vue'
+  import axios from 'axios'
+  import WeatherCard from './WeatherCard.vue'
+  import SettingsPopup from './SettingsPopup.vue'
+  import Loader from './Loader.vue'
+  
+  export default {
+    components: {
+      WeatherCard,
+      SettingsPopup,
+      Loader
+    },
+    setup() {
+      const latitude = ref<number | null>(null)
+      const longitude = ref<number | null>(null)
+      const errorMessage = ref<string | null>(null)
+      const API_KEY = "188f6e276831bbab19cc0ba7441ef581"
+      const BASE_URL = "https://api.openweathermap.org/data/2.5/"
+      const apiData = ref<any>(null)
+      const loading = ref<boolean>(true)
+      const formattedDate = ref<string>("")
+      const formattedTime = ref<string>("")
+  
+      const isPopupVisible = ref<boolean>(false)
+      const temperatureUnit = ref<string>("C")
+      const measurementUnit = ref<string>("metric")
+  
+      const togglePopup = () => {
+        isPopupVisible.value = !isPopupVisible.value
+      }
+      const setTemperatureUnit = (unit: string) => {
+        temperatureUnit.value = unit
+      }
+      const setMeasurementUnit = (unit: string) => {
+        measurementUnit.value = unit
+      }
+  
+      // This function fetches the user's location from the browser and updates the latitude and longitude refs
     const getLocation = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -96,95 +129,30 @@ export default {
         }
     }
 
-    // Fetch the user's location when the component is mounted
-    onMounted(() => {
-      getLocation()
-    })
-
-    return {
-      latitude,
-      longitude,
-      errorMessage,
-      apiData,
-      loading,
-      formattedDate,
-      formattedTime,
-      isPopupVisible,
-      temperatureUnit,
-      measurementUnit,
-      togglePopup,
-      setTemperatureUnit,
-      setMeasurementUnit
+  
+      onMounted(() => {
+        getLocation()
+      })
+  
+      return {
+        latitude,
+        longitude,
+        errorMessage,
+        apiData,
+        loading,
+        formattedDate,
+        formattedTime,
+        isPopupVisible,
+        temperatureUnit,
+        measurementUnit,
+        togglePopup,
+        setTemperatureUnit,
+        setMeasurementUnit
+      }
     }
   }
-}
-</script>
+  </script>
+  
+  <style scoped>
 
-<template>
-  <div id="bg">
-    <div class="card" v-if="latitude && longitude">
-      <div class="content" v-if="apiData">
-        <div class="card-top">
-            <div class="info">
-                <h1>{{ apiData.name }}</h1>
-                <p>{{ formattedDate }}</p>
-                <p>{{ formattedTime }}</p>
-            </div>
-            <div class="settings">
-                <button @click="togglePopup" class="bi bi-gear-fill gear"></button>
-                <div class="popup" v-if="isPopupVisible">
-                    <section>
-                        <h4>Temperature</h4>
-                        <div class="switch">
-                            <button 
-                              :class="{ active: temperatureUnit === 'C' }" 
-                              @click="setTemperatureUnit('C')">°C</button>
-                            <button 
-                              :class="{ active: temperatureUnit === 'F' }" 
-                              @click="setTemperatureUnit('F')">°F</button>
-                        </div>
-                    </section>
-                    <section>
-                        <h4>Measurements</h4>
-                        <div class="switch">
-                            <button 
-                              :class="{ active: measurementUnit === 'metric' }" 
-                              @click="setMeasurementUnit('metric')">Metric</button>
-                            <button 
-                              :class="{ active: measurementUnit === 'imperial' }" 
-                              @click="setMeasurementUnit('imperial')">Imperial</button>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </div>
-      </div>
-      <!-- This loader will be displayed while the data is being fetched -->
-      <div class="loader" v-if="loading"></div>
-
-      <!-- Error Message -->
-      <h2 v-if="errorMessage" style="color: red;">{{ errorMessage }}</h2>
-    </div>
-  </div>
-</template>
-
-<style scoped>
-.loader {
-  width: 45px;
-  aspect-ratio: 1;
-  --c: no-repeat linear-gradient(#cccccc 0 0);
-  background: 
-    var(--c) 0%   50%,
-    var(--c) 50%  50%,
-    var(--c) 100% 50%;
-  background-size: 20% 100%;
-  animation: l1 1s infinite linear;
-}
-@keyframes l1 {
-  0%  {background-size: 20% 100%,20% 100%,20% 100%}
-  33% {background-size: 20% 10% ,20% 100%,20% 100%}
-  50% {background-size: 20% 100%,20% 10% ,20% 100%}
-  66% {background-size: 20% 100%,20% 100%,20% 10% }
-  100%{background-size: 20% 100%,20% 100%,20% 100%}
-}
-</style>
+  </style>
