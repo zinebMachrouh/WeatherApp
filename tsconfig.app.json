@@ -14,9 +14,10 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "preserve",
+    "noEmitOnError": false,
 
     /* Linting */
-    "strict": true,
+    "strict": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,

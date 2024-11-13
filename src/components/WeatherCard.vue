@@ -87,8 +87,9 @@
         required: true
       },
       temperatureUnit: {
-        type: String,
-        required: true
+        type: String as PropType<'C' | 'F'>,
+        default: 'C',
+        required: false
       },
       allData: {
         type: Object as PropType<any>,
