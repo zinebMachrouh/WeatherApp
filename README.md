@@ -58,6 +58,14 @@ npm run dev
 
 This will start the development server and open the app in your browser. Now you’re all set to check the weather!
 
+## 🎥 Demo
+
+Want to see the Weather App in action before setting it up? Check out our live demo:
+
+[Live Demo](https://zinebmachrouh.github.io/WeatherApp/)
+
+Explore the app's features and see how it provides real-time weather updates and forecasts with a sleek and responsive design.
+
 ## 🧹 Code Linting
 
 We take code quality seriously! To ensure the app maintains clean and readable code, we use ESLint. To run the linter, execute:
