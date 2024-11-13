@@ -18,11 +18,11 @@
 }
 
 body{
-  background-color: var(--background);
+  background: linear-gradient(to bottom, #1a2131, #0E121B);
 }
 
 #bg {
-  background: var(--background);
+  background: linear-gradient(to bottom, #1a2131, #0E121B);
   height: 100vh;
   width: 100vw;
   display: flex;
