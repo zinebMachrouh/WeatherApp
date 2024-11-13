@@ -3,8 +3,10 @@
       <div class="card-top">
         <div class="info">
           <h1>{{ apiData.name }}</h1>
-          <p>{{ formattedDate }}</p>
-          <p>{{ formattedTime }}</p>
+          <div class="date-time">
+            <p>{{ formattedDate }}</p>
+            <p>{{ formattedTime }}</p>
+          </div>
         </div>
         <slot name="settings"></slot>
       </div>
@@ -20,19 +22,19 @@
       </div>
       <div class="details">
         <div class="detail">
-          <p><i class="bi bi-droplet"></i> Humidity</p>
+          <p><img src="/public/icons/drop.png" alt="drop"> Humidity</p>
           <h4>{{ apiData.main.humidity }}%</h4>
         </div>
         <div class="detail">
-          <p><i class="bi bi-cloud-drizzle"></i> Precipitation</p>
+          <p><img src="/public/icons/rain.png" alt="rain"> Precipitation</p>
           <h4>{{ allData.forecast.forecastday[0].hour[0].chance_of_rain }} %</h4>
         </div>
         <div class="detail">
-          <p><i class="bi bi-wind"></i> Wind</p>
+          <p><img src="/public/icons/wind.png" alt="wind"> Wind</p>
           <h4>{{ allData.current.wind_kph }} km/h</h4>
         </div>
         <div class="detail">
-          <p><i class="bi bi-speedometer2"></i> AQI</p>
+          <p><img src="/public/icons/aqi.png" alt="aqi"> AQI</p>
           <h4>{{ aqi }}</h4>
         </div>
       </div>

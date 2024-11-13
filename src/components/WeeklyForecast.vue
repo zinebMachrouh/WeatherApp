@@ -51,7 +51,6 @@
     overflow-x: auto;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 0;
     scrollbar-width: none;
   }
   .weekly-forecast::-webkit-scrollbar {
@@ -64,21 +63,28 @@
     align-items: center;
     min-width: 30%;
     text-align: center;
+    gap: 2px;
+
+    p {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.6%;
+    }
   }
   
   .day img {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 5px;
+    width: 24px;
+    height: 24px;
   }
   
-  .temperature_active {
-    font-weight: 600;
+  p.temperature_active {
+    font-weight: 700;
     margin-top: 5px;
   }
   
-  .temperature {
-    font-weight: 600;
+  p.temperature {
+    font-weight: 700;
     color: #aaacb2;
   }
   </style>

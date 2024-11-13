@@ -39,15 +39,12 @@
   </script>
   
   <style scoped>
-  .hourly-forecast {
-    padding: 10px;
-  }
+  
   
   .forecast-items {
     display: flex;
     overflow-x: scroll;
-    gap: 15px;
-    padding: 10px 0;
+    gap: 32px;
     scroll-snap-type: x mandatory;
   }
   
@@ -55,15 +52,25 @@
     flex-shrink: 0;
     text-align: center;
     scroll-snap-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
 
+    p {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.6%;
+    }
     p:last-child {
-      font-weight: 600;
+      font-weight: 700;
     }
   }
   
   .forecast-item img {
-    width: 45px;
-    height: 45px;
+    width: 25px;
+    height: 25px;
   }
   
   .forecast-items::-webkit-scrollbar {
