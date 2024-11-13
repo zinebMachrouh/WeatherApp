@@ -57,7 +57,7 @@
             <button :class="{ active: status === 'week' }" @click="toggleStatus('week')">7-Day Forecast</button>
         </div>
         <HourlyForecast v-if="status === 'hour'" :hourlyData="allData.forecast.forecastday[0].hour" :temperatureUnit="temperatureUnit"/>
-        <h4 v-else>7-Day Forecast</h4>
+        <WeeklyForecast v-else :dailyData="allData.forecast.forecastday" :temperatureUnit="temperatureUnit"/>
       </div>
     </div>
   </template>
@@ -65,11 +65,13 @@
   <script lang="ts">
   import { defineComponent, PropType, computed, ref } from 'vue'
   import HourlyForecast from './HourlyForecast.vue'
+  import WeeklyForecast from './WeeklyForecast.vue'
 
   export default defineComponent({
     name: 'WeatherCard',
     components: {
-      HourlyForecast
+      HourlyForecast,
+      WeeklyForecast
     },
     props: {
       apiData: {
