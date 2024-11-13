@@ -37,6 +37,7 @@ import WeatherCard from './WeatherCard.vue'
 import SettingsPopup from './SettingsPopup.vue'
 import Loader from './Loader.vue'
 
+// @ts-ignore
 export default {
 components: {
     WeatherCard,
@@ -58,8 +59,9 @@ setup() {
     const formattedTime = ref<string>("")
 
     const isPopupVisible = ref<boolean>(false)
-    const temperatureUnit = ref<string>("C")
-    const measurementUnit = ref<string>("metric")
+    const temperatureUnit = ref<'C' | 'F'>('C')
+    const measurementUnit = ref<'metric' | 'imperial'>('metric')
+
 
     const aqi = ref<number | null>(null)
 
@@ -67,11 +69,12 @@ setup() {
     isPopupVisible.value = !isPopupVisible.value
     }
     const setTemperatureUnit = (unit: string) => {
-    temperatureUnit.value = unit
-    }
+        temperatureUnit.value = unit as 'C' | 'F';  // Assert that unit is of type 'C' or 'F'
+    }   
+
     const setMeasurementUnit = (unit: string) => {
-    measurementUnit.value = unit
-    fetchApiDataAll()
+        measurementUnit.value = unit as 'metric' | 'imperial';  // Assert that unit is 'metric' or 'imperial'
+        fetchApiDataAll();
     }
 
     // This function fetches the user's location from the browser and updates the latitude and longitude refs
@@ -165,6 +168,7 @@ const fetchAQIData = async () => {
             const response = await axios.get(
             `${BASE_URL}air_pollution?lat=${latitude.value}&lon=${longitude.value}&appid=${API_KEY}`
             )
+            // @ts-ignore
             aqi.value = response.data.list[0].main.aqi
             console.log("AQI Response:", aqi.value)
         } catch (error) {
