@@ -35,7 +35,7 @@ body{
     background-color: var(--white);
     border-radius: 15px;
     width: 90%;
-    height: 68%;
+    height: fit-content;
     padding: 25px;
     display: flex;
     align-items: center;
