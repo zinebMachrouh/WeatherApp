@@ -23,9 +23,10 @@
         </div>
         </template>
     </WeatherCard>
-    <Loader v-if="loading" />
-    <h2 v-if="errorMessage" style="color: red;">{{ errorMessage }}</h2>
-    </div>
+</div>
+<Loader v-if="loading" />
+
+<h2 v-if="errorMessage" style="color: white;">{{ errorMessage }}</h2>
 </div>
 </template>
 
