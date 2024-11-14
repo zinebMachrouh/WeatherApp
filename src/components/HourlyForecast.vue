@@ -1,15 +1,18 @@
 <template>
-    <div class="hourly-forecast">
+  <div class="hourly-forecast">
+    <div class="forecast-items-wrapper">
       <div class="forecast-items">
         <div class="forecast-item" v-for="hour in hourlyData" :key="hour.time">
           <p>{{ formatHour(hour.time) }}</p>
-          <img :src="hour.condition.icon" alt="Weather Icon">
+          <img :src="hour.condition.icon" alt="Weather Icon" />
           <p v-if="temperatureUnit === 'C'">{{ formatTemperature(hour.temp_c) }}°</p>
-            <p v-else>{{ formatTemperature(hour.temp_f) }}°</p>
+          <p v-else>{{ formatTemperature(hour.temp_f) }}°</p>
         </div>
       </div>
+      <div class="fade-overlay"></div> 
     </div>
-  </template>
+  </div>
+</template>
   
   <script lang="ts">
   import { defineComponent, PropType } from 'vue';
@@ -39,7 +42,11 @@
   </script>
   
   <style scoped>
-  
+  .forecast-items-wrapper {
+  position: relative;
+  display: flex;
+  }
+
   
   .forecast-items {
     display: flex;
@@ -80,6 +87,15 @@
   .forecast-items {
     -ms-overflow-style: none;  
     scrollbar-width: none;  
+  }
+  .fade-overlay {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 48px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%);
+  pointer-events: none; 
   }
   </style>
   

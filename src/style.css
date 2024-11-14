@@ -51,8 +51,8 @@ body{
 
       .switch{
         background-color: #F5F7FA;
-        padding: 3px;
-        border-radius: 5px;
+        padding: 4px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         gap: 4px;
@@ -64,7 +64,7 @@ body{
           color: #99A0AE;
           border: none;
           outline: none;
-          border-radius: 3px;
+          border-radius: 6px;
           font-weight: 500;
           transition: all ease-in-out 0.3s;
         }
